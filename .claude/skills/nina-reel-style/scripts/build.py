@@ -11,11 +11,12 @@ Output: segs.json (cut list for render.py), subs.ass (captions, hook, table)
 import json
 
 P = json.load(open('project.json'))
-words = [(a / 1000, b / 1000, t) for a, b, t in P['words']]
+words = [(a / 1000, b / 1000, t) for a, b, t in P['words'] if '__silence' not in t]
 FIX = P.get('fix', {})
 PLAN = P['plan']
 HOOK = P['hook']
 NPL = P.get('places', 6)
+R0 = P.get('first_rank', 1)  # e.g. 6 for 'Teil 2 (Platz 10 bis 6)'
 FPS = 30
 
 segs, subs, t_out, zi = [], [], 0.0, 0
@@ -121,7 +122,7 @@ Y0 = 1680 - (NPL * RH + (NPL - 1) * GAP)
 PAL = ['22B55A', '8BCB4A', 'F4C63D', 'F08A3E', 'EE5A28', 'B71C1C']
 if P.get('order') == 'red_top':
     PAL = PAL[::-1]
-COL = {r: PAL[round((r - 1) * (len(PAL) - 1) / max(1, NPL - 1))] for r in range(1, NPL + 1)}
+COL = {r: PAL[round((r - 1) * (len(PAL) - 1) / max(1, NPL - 1))] for r in range(1, NPL + 1)}  # r = table row
 
 
 def bgr(h, f=1.0):
@@ -138,11 +139,11 @@ for rk in range(1, NPL + 1):
     y = Y0 + (rk - 1) * (RH + GAP)
     ev.append(f"Dialogue: 3,{ts(0)},{ts(END)},Tbl,,0,0,0,,{{\\an7\\pos({X0},{y})\\bord0\\shad0\\1c{bgr(COL[rk])}\\1a&H10&\\p1}}{rr(W, RH)}{{\\p0}}")
     ev.append(f"Dialogue: 4,{ts(0)},{ts(END)},Tbl,,0,0,0,,{{\\an7\\pos({X0},{y})\\bord0\\shad0\\1c{bgr(COL[rk], 0.78)}\\p1}}{rr(NB, RH)}{{\\p0}}")
-    ev.append(f"Dialogue: 5,{ts(0)},{ts(END)},Tbl,,0,0,0,,{{\\an5\\pos({X0 + NB // 2},{y + RH // 2})\\fs56}}{rk}")
+    ev.append(f"Dialogue: 5,{ts(0)},{ts(END)},Tbl,,0,0,0,,{{\\an5\\pos({X0 + NB // 2},{y + RH // 2})\\fs56}}{rk + R0 - 1}")
 
 TX, TY = 540, 1112
 for p in places:
-    y = Y0 + (p['rank'] - 1) * (RH + GAP) + RH // 2
+    y = Y0 + (p['rank'] - R0) * (RH + GAP) + RH // 2
     bx = X0 + NB + (W - NB) // 2
     a, s = p['ns'], p['ps']
     name = p['name']
