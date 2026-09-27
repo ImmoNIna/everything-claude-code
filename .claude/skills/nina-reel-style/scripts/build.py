@@ -104,16 +104,31 @@ for gi, g in enumerate(groups):
         ev.append(f"Dialogue: 0,{ts(st)},{ts(en)},Cap,,0,0,0,,{pop}" + ' '.join(parts))
 
 # ---- ranking table ----
-places, cur = [], None
-for g in groups:
+# Two recording styles: name first and "Platz X" at the end (slide at "Platz X"),
+# or "Platz X: Name" first (slide just before the next place starts / at the end).
+def rank_of(g):
+    return int(''.join(c for c in ' '.join(x[2] for x in g) if c.isdigit()))
+
+
+places, cur, pending = [], None, None
+for gi, g in enumerate(groups):
     k = g[0][3]
     if k == 'n':
-        cur = {'name': ' '.join(x[2] for x in g).rstrip('.').replace('- ', '-'), 'ns': g[0][0]}
-    elif k == 'p' and cur:
-        cur['rank'] = int(''.join(c for c in g[-1][2] if c.isdigit()))
-        cur['ps'] = g[0][0]
-        places.append(cur)
-        cur = None
+        cur = {'name': ' '.join(x[2] for x in g).rstrip('.:').replace('- ', '-'), 'ns': g[0][0]}
+        if pending is not None:
+            cur['rank'] = pending
+            nxt_p = next((h[0][0] for h in groups[gi + 1:] if h[0][3] == 'p'), None)
+            cur['ps'] = (nxt_p - 0.7) if nxt_p else (subs[-1][1] - 0.3)
+            places.append(cur)
+            cur, pending = None, None
+    elif k == 'p':
+        if cur:
+            cur['rank'] = rank_of(g)
+            cur['ps'] = g[0][0]
+            places.append(cur)
+            cur = None
+        else:
+            pending = rank_of(g)
 END = t_out + 1
 W, RH, GAP, NB = 600, 78, 8, 80
 X0 = (1080 - W) // 2
