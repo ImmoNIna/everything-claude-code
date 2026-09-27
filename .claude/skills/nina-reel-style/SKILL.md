@@ -42,6 +42,14 @@ Ranking-Tabelle (ganzes Video sichtbar, ueber dem Video, kein schwarzer Hintergr
 
 Ueberschrift (Straßenname): waehrend der Bewertung schwarze Schrift 72 px auf weißem Kasten (hebt sich von den Untertiteln ab), einzeilig, bei y=1112 zentriert direkt ueber der Tabelle, normale Groß-/Kleinschreibung. Bei "Platz X" wird daraus weiße Schrift, die in 0,55 s einzeilig in ihren Balken gleitet und dort bis zum Ende bleibt.
 
+## Ablauf (Skripte in scripts/, Composio Sandbox: 1 CPU, 1 GB RAM)
+
+1. Rohvideo per Composio GOOGLEDRIVE_DOWNLOAD_FILE holen (s3url), in ~/cut/raw.mp4 laden
+2. Transkript mit Wort-Zeitstempeln: Rohvideo per opusclip_create_upload_link zu OpusClip, submit_project (skipSlicing), opusclip_get_transcript
+3. projects/<name>.json anlegen: words, plan (t/n/p Abschnitte, beste Takes), fix, hook, places
+4. Skripte per raw.githubusercontent.com vom Branch holen, `bash setup.sh`, `python3 build.py`, `python3 faces.py`, `python3 render.py`, `bash finish.sh` (lange Schritte mit nohup im Hintergrund, Befehle max. 60 s)
+5. final.mp4 per upload_local_file + GOOGLEDRIVE_RESUMABLE_UPLOAD in "videos für Nina"
+
 ## Examples
 
 Referenz: "Ranking lauteste Straßen Hamburg v7" im Ordner "videos für Nina".
