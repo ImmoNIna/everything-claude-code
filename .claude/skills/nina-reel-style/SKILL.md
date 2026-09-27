@@ -46,7 +46,7 @@ Ueberschrift (Straßenname): waehrend der Bewertung schwarze Schrift 72 px auf w
 
 1. Rohvideo per Composio GOOGLEDRIVE_DOWNLOAD_FILE holen (s3url), in ~/work/raw.mp4 laden (Ordner per Bash anlegen, nicht per Workbench: die laeuft als root)
 2. Transkript mit Wort-Zeitstempeln: Rohvideo per opusclip_create_upload_link zu OpusClip, submit_project (skipSlicing), opusclip_get_transcript
-3. projects/<name>.json anlegen: words, plan (t/n/p Abschnitte, beste Takes), fix, hook, places
+3. projects/<name>.json anlegen: words, plan (t/n/p Abschnitte, beste Takes, Reihenfolge immer vom letzten zum ersten Platz), fix, hook, places, optional first_rank (z. B. 6 bei Platz 10 bis 6) und order ("red_top" nur bei Negativ-Rankings). Beide Aufnahmestile gehen: Name zuerst und "Platz X" am Ende, oder "Platz X: Name" zuerst (dann gleitet der Name kurz vor dem naechsten Platz in die Tabelle)
 4. Skripte per raw.githubusercontent.com vom Branch holen, `bash setup.sh`, `python3 build.py`, `python3 faces.py`, `python3 render.py`, `bash finish.sh` (lange Schritte mit nohup im Hintergrund; jeder Aufruf unter 60 s halten, sonst wird die Sandbox zurueckgesetzt und alle Dateien sind weg)
 5. final.mp4 per upload_local_file + GOOGLEDRIVE_RESUMABLE_UPLOAD in "videos für Nina"
 
