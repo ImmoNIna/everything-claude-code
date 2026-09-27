@@ -68,7 +68,7 @@ Style: Hook,Montserrat,66,&H00000000,&H00000000,&H00FFFFFF,&H00FFFFFF,-1,0,0,0,1
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 """
-ev = [f"Dialogue: 2,{ts(0)},{ts(3.2)},Hook,,0,0,0,,{{\\fad(120,150)}}{HOOK}"]
+ev = []  # hook title is rendered as hook.png by hook.py
 
 # caption groups: max 3 words, break after punctuation; names and "Platz X" kept whole
 groups = []

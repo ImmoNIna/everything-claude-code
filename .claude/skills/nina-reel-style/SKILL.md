@@ -27,7 +27,7 @@ Schnitt:
 
 Schrift: Montserrat Bold ueberall.
 
-Hook (erste 3,2 s): schwarze Schrift 66 px auf weißem Kasten, oben, MarginV 150.
+Hook-Ueberschrift (erste 3,2 s): wie in Ninas Feed, Großbuchstaben, runde fette Schrift (Fredoka), schwarz auf weißen Kaesten mit runden Ecken, ein Kasten pro Zeile, zentriert, 88 px (Unterzeile 72 %). Nie im oberen Instagram-Sperrbereich: Oberkante erster Kasten immer bei y=230, nie hoeher und nie kleiner als 88 px. Wird von scripts/hook.py als hook.png gerendert.
 
 Untertitel: weiß 82 px, schwarze Kontur 7, aktives Wort gelb #FFE600, max. 3 Woerter, unten ausgerichtet mit MarginV 870 (Unterkante y=1050, zwischen Gesicht und Straßennamen).
 
