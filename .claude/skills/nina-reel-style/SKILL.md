@@ -20,14 +20,16 @@ Format: 1080x1920, 30 fps, H.264, AAC 48 kHz, Lautheit -14 LUFS, Tempo 1,1 (Stim
 Schnitt:
 - Beste Aufnahme pro Satz waehlen, Wiederholungen, Versprecher, Fuellwoerter und Pausen > 0,28 s raus
 - Kalter Einstieg: 2 bis 3 starke Saetze als Teaser
-- Bild nach oben verschoben: Grundzoom 1,12 / 1,20 im Wechsel, Straßenname und "Platz X" 1,30; Crop-Y = (ih-1920)*0,85
+- Gesicht in jedem Schnitt gleich positioniert: Gesichtserkennung (OpenCV YuNet) pro Schnitt, Ausschnitt so, dass die Gesichtsmitte bei x=540, y=600 liegt
+- Zoom pro Schnitt: Grundzoom 1,00 / 1,08 im Wechsel, Straßenname und "Platz X" 1,15; hoeher nur falls noetig, damit das Gesicht auf y=600 kommt (Mindestzoom 1320/(1920-Gesicht_y)), maximal 1,15
+- Pruefung vor Upload: Gesichtskasten in jedem Schnitt vollstaendig im Bild, oben mindestens 150 px Abstand
 - Straßenname / Ueberbegriff: Telefonstimme (highpass 350 Hz, lowpass 3200 Hz, Kompressor 8:1)
 
 Schrift: Montserrat Bold ueberall.
 
 Hook (erste 3,2 s): schwarze Schrift 66 px auf weißem Kasten, oben, MarginV 150.
 
-Untertitel: weiß 82 px, schwarze Kontur 7, aktives Wort gelb #FFE600, max. 3 Woerter, unten ausgerichtet mit MarginV 773 (sitzt direkt ueber der Tabelle).
+Untertitel: weiß 82 px, schwarze Kontur 7, aktives Wort gelb #FFE600, max. 3 Woerter, unten ausgerichtet mit MarginV 870 (Unterkante y=1050, zwischen Gesicht und Straßennamen).
 
 "PLATZ X": gelb 96 px, Großbuchstaben, gleiche Position wie Untertitel.
 
@@ -38,8 +40,8 @@ Ranking-Tabelle (ganzes Video sichtbar, ueber dem Video, kein schwarzer Hintergr
 - Farben Platz 1 bis 6: #22B55A, #8BCB4A, #F4C63D, #F08A3E, #EE5A28, #B71C1C
 - Ecken abgerundet 12 px
 
-Ueberschrift (Straßenname): waehrend der Bewertung schwarze Schrift 92 px auf weißem Kasten (hebt sich von den Untertiteln ab), bei y=880 zentriert, normale Groß-/Kleinschreibung, ab 14 Zeichen zweizeilig. Bei "Platz X" wird daraus weiße Schrift, die in 0,55 s einzeilig in ihren Balken gleitet und dort bis zum Ende bleibt.
+Ueberschrift (Straßenname): waehrend der Bewertung schwarze Schrift 72 px auf weißem Kasten (hebt sich von den Untertiteln ab), einzeilig, bei y=1112 zentriert direkt ueber der Tabelle, normale Groß-/Kleinschreibung. Bei "Platz X" wird daraus weiße Schrift, die in 0,55 s einzeilig in ihren Balken gleitet und dort bis zum Ende bleibt.
 
 ## Examples
 
-Referenz: "Ranking lauteste Straßen Hamburg v5" im Ordner "videos für Nina".
+Referenz: "Ranking lauteste Straßen Hamburg v6" im Ordner "videos für Nina".
