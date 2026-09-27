@@ -62,7 +62,7 @@ Style: Cap,Montserrat,82,&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,-1,0,0,0,10
 Style: Name,Montserrat,96,&H0000E6FF,&H0000E6FF,&H00000000,&H64000000,-1,0,0,0,100,100,0,0,1,9,3,2,50,50,870,1
 Style: Tbl,Montserrat,48,&H00FFFFFF,&H00FFFFFF,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,3,0,5,0,0,0,1
 Style: Title,Montserrat,56,&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,-1,0,0,0,100,100,0,0,1,3,1,5,0,0,0,1
-Style: TitleBox,Montserrat,72,&H00000000,&H00000000,&H00FFFFFF,&H00FFFFFF,-1,0,0,0,100,100,0,0,3,24,0,5,0,0,0,1
+Style: TitleBox,Montserrat,54,&H00000000,&H00000000,&H00FFFFFF,&H00FFFFFF,-1,0,0,0,100,100,0,0,1,0,0,5,0,0,0,1
 Style: Hook,Montserrat,66,&H00000000,&H00000000,&H00FFFFFF,&H00FFFFFF,-1,0,0,0,100,100,0,0,3,22,0,8,90,90,150,1
 
 [Events]
@@ -156,7 +156,9 @@ for rk in range(1, NPL + 1):
     ev.append(f"Dialogue: 4,{ts(0)},{ts(END)},Tbl,,0,0,0,,{{\\an7\\pos({X0},{y})\\bord0\\shad0\\1c{bgr(COL[rk], 0.78)}\\p1}}{rr(NB, RH)}{{\\p0}}")
     ev.append(f"Dialogue: 5,{ts(0)},{ts(END)},Tbl,,0,0,0,,{{\\an5\\pos({X0 + NB // 2},{y + RH // 2})\\fs56}}{rk + R0 - 1}")
 
-TX, TY = 540, 1112
+TBH = 110  # name box directly on top of the table, same width as the table (Nina's reference)
+TX, TY = 540, Y0 - TBH // 2
+CAPMV = 1920 - (Y0 - TBH - 20)  # captions end 20 px above the name box
 for p in places:
     y = Y0 + (p['rank'] - R0) * (RH + GAP) + RH // 2
     bx = X0 + NB + (W - NB) // 2
@@ -165,8 +167,11 @@ for p in places:
     est = len(name) * 0.42
     fb = int(min(56, (W - NB - 30) / (est * 0.85)))
     bs = int(min(100, 100 * (W - NB - 30) / (est * fb)))
-    ev.append(f"Dialogue: 6,{ts(a)},{ts(s)},TitleBox,,0,0,0,,{{\\an5\\q2\\pos({TX},{TY})\\fscx115\\fscy115\\t(0,160,\\fscx100\\fscy100)}}{name}")
+    ev.append(f"Dialogue: 6,{ts(a)},{ts(s)},Tbl,,0,0,0,,{{\\an7\\pos({X0},{Y0 - TBH})\\bord0\\shad0\\1c&HFFFFFF&\\fad(120,0)\\p1}}{rr(W, TBH, 6)}{{\\p0}}")
+    tb = int(min(100, 100 * (W - 40) / (len(name) * 0.60 * 54)))
+    ev.append(f"Dialogue: 7,{ts(a)},{ts(s)},TitleBox,,0,0,0,,{{\\an5\\q2\\pos({TX},{TY})\\fscx{tb}\\fad(120,0)}}{name}")
     ev.append(f"Dialogue: 6,{ts(s)},{ts(END)},Title,,0,0,0,,{{\\an5\\q2\\fs{fb}\\move({TX},{TY},{bx},{y},0,550)"
-              f"\\fscx{int(7200 / fb)}\\fscy{int(7200 / fb)}\\t(0,550,\\fscx{bs}\\fscy100)}}{name}")
+              f"\\fscx{int(5400 / fb)}\\fscy{int(5400 / fb)}\\t(0,550,\\fscx{bs}\\fscy100)}}{name}")
 print('places', [(p['rank'], p['name']) for p in places])
+hdr = hdr.replace(',60,60,870,1', f',60,60,{CAPMV},1').replace(',50,50,870,1', f',50,50,{CAPMV},1')
 open('subs.ass', 'w').write(hdr + '\n'.join(ev) + '\n')

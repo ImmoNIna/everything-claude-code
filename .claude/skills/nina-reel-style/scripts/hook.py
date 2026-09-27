@@ -1,42 +1,46 @@
-"""Render the hook title (first 3.2 s) as hook.png in Nina's Instagram style.
+"""Render the hook title (first 3.2 s) as hook.png, exactly like Nina's feed reels.
 
-Uppercase rounded bold font (Fredoka), black text, each line on its own white
-rounded box, centred. Top of the first box never above y=230 (Instagram top
-UI zone). Lines come from project.json "hook" (split at \\N); a line starting
-with "~" is drawn smaller (sub line, e.g. "Teil 2 (Platz 10 bis 6)").
+One white box with slightly rounded corners, black Montserrat Bold 68 px,
+normal upper/lower case, centred lines. Box 808 px wide, top at y=360
+(below the Instagram top UI). Text from project.json "hook"; "\\N" forces a
+line break, long lines wrap automatically. Never move it higher or make it smaller.
 """
 import json
 import os
 
 from PIL import Image, ImageDraw, ImageFont
 
-FONT = os.path.expanduser('~/.fonts/Fredoka.ttf')
-TOP, SIZE, SUB, PADX, PADY, GAP, RADIUS = 230, 88, 0.72, 30, 16, 0, 26
+FONT = os.path.expanduser('~/.fonts/Montserrat.ttf')
+TOP, BOX_W, SIZE, PADY, LINE, RADIUS = 360, 808, 68, 26, 1.17, 10
 
 P = json.load(open('project.json'))
-lines = [l for l in P['hook'].replace('\\N', '\n').split('\n') if l.strip()]
+font = ImageFont.truetype(FONT, SIZE)
+try:
+    font.set_variation_by_name('Bold')
+except Exception:
+    pass
 img = Image.new('RGBA', (1080, 1920), (0, 0, 0, 0))
 d = ImageDraw.Draw(img)
-y = TOP
-for line in lines:
-    sub = line.startswith('~')
-    text = line.lstrip('~').upper()
-    size = int(SIZE * (SUB if sub else 1))
-    font = ImageFont.truetype(FONT, size)
-    try:
-        font.set_variation_by_axes([100, 650])  # width, weight (semi bold+)
-    except Exception:
-        pass
-    while d.textlength(text, font=font) > 1080 - 2 * (PADX + 40):
-        size -= 2
-        font = font.font_variant(size=size)
-    w = d.textlength(text, font=font)
-    asc, desc = font.getmetrics()
-    h = asc + desc
-    x0 = (1080 - w) / 2 - PADX
-    box = [x0, y, x0 + w + 2 * PADX, y + h + 2 * PADY]
-    d.rounded_rectangle(box, radius=RADIUS, fill=(255, 255, 255, 255))
-    d.text(((1080 - w) / 2, y + PADY), text, font=font, fill=(0, 0, 0, 255))
-    y = box[3] + GAP
+maxw = BOX_W - 80
+lines = []
+for part in P['hook'].replace('\\N', '\n').split('\n'):
+    cur = ''
+    for word in part.lstrip('~').split():
+        test = (cur + ' ' + word).strip()
+        if d.textlength(test, font=font) <= maxw or not cur:
+            cur = test
+        else:
+            lines.append(cur)
+            cur = word
+    if cur:
+        lines.append(cur)
+lh = int(SIZE * LINE)
+box_h = len(lines) * lh + 2 * PADY
+x0 = (1080 - BOX_W) // 2
+d.rounded_rectangle([x0, TOP, x0 + BOX_W, TOP + box_h], radius=RADIUS, fill=(255, 255, 255, 255))
+asc, desc = font.getmetrics()
+for k, line in enumerate(lines):
+    w = d.textlength(line, font=font)
+    d.text(((1080 - w) / 2, TOP + PADY + k * lh + (lh - asc - desc) / 2), line, font=font, fill=(0, 0, 0, 255))
 img.save('hook.png')
-print('HOOK', lines, 'bottom', int(y))
+print('HOOK', lines, 'box', TOP, TOP + box_h)

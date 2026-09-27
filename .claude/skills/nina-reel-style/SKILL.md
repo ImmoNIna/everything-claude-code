@@ -20,14 +20,15 @@ Format: 1080x1920, 30 fps, H.264, AAC 48 kHz, Lautheit -14 LUFS, Tempo 1,1 (Stim
 Schnitt:
 - Beste Aufnahme pro Satz waehlen, Wiederholungen, Versprecher, Fuellwoerter und Pausen > 0,28 s raus
 - Kalter Einstieg: 2 bis 3 starke Saetze als Teaser
-- Gesicht in jedem Schnitt gleich positioniert: Gesichtserkennung (OpenCV YuNet) pro Schnitt, Ausschnitt so, dass die Gesichtsmitte bei x=540, y=600 liegt
-- Zoom pro Schnitt: Grundzoom 1,00 / 1,08 im Wechsel, Straßenname und "Platz X" 1,15; hoeher nur falls noetig, damit das Gesicht auf y=600 kommt (Mindestzoom 1320/(1920-Gesicht_y)), maximal 1,15
+- Gesicht in jedem Schnitt gleich positioniert: Gesichtserkennung (OpenCV YuNet) pro Schnitt, Gesichtsmitte bei x=540, y=520 (hoch, damit keine Schrift vor dem Mund liegt). Waehrend der Hook (erste 3,3 s) bleibt das Gesicht unten, damit der Hook-Kasten darueber sitzt
+- Zoom pro Schnitt: Grundzoom 1,00 / 1,08 im Wechsel, Straßenname und "Platz X" 1,15; hoeher nur falls noetig, damit das Gesicht auf y=520 kommt, maximal 1,3
+- Bewegung: etwa alle 5 bis 7 Sekunden ein weicher Zoom rein bzw. raus (abwechselnd, 10 %) ueber einen ganzen Satz
 - Pruefung vor Upload: Gesichtskasten in jedem Schnitt vollstaendig im Bild, oben mindestens 150 px Abstand
 - Straßenname / Ueberbegriff: Telefonstimme (highpass 350 Hz, lowpass 3200 Hz, Kompressor 8:1)
 
 Schrift: Montserrat Bold ueberall.
 
-Hook-Ueberschrift (erste 3,2 s): wie in Ninas Feed, Großbuchstaben, runde fette Schrift (Fredoka), schwarz auf weißen Kaesten mit runden Ecken, ein Kasten pro Zeile, zentriert, 88 px (Unterzeile 72 %). Nie im oberen Instagram-Sperrbereich: Oberkante erster Kasten immer bei y=230, nie hoeher und nie kleiner als 88 px. Wird von scripts/hook.py als hook.png gerendert.
+Hook-Ueberschrift (erste 3,2 s), exakt wie in Ninas Feed (Referenz "Hausverkauf statt Erbschaft"): EIN weißer Kasten, 808 px breit, zentriert, leicht runde Ecken (10 px), Oberkante y=360, schwarze Montserrat Bold 68 px in normaler Groß-/Kleinschreibung, Zeilen zentriert und automatisch umbrochen. Nie hoeher und nie kleiner. Gerendert von scripts/hook.py.
 
 Untertitel: weiß 82 px, schwarze Kontur 7, aktives Wort gelb #FFE600, max. 3 Woerter, unten ausgerichtet mit MarginV 870 (Unterkante y=1050, zwischen Gesicht und Straßennamen).
 
@@ -40,7 +41,7 @@ Ranking-Tabelle (ganzes Video sichtbar, ueber dem Video, kein schwarzer Hintergr
 - Farben Standard (oben gruen, unten rot): Platz 1 bis 6 #22B55A, #8BCB4A, #F4C63D, #F08A3E, #EE5A28, #B71C1C. Nur bei Negativ-Rankings (z. B. lauteste Straßen, Platz 1 = am schlimmsten) umgedreht: im Projekt \"order\": \"red_top\"
 - Ecken abgerundet 12 px
 
-Ueberschrift (Straßenname): waehrend der Bewertung schwarze Schrift 72 px auf weißem Kasten (hebt sich von den Untertiteln ab), einzeilig, bei y=1112 zentriert direkt ueber der Tabelle, normale Groß-/Kleinschreibung. Bei "Platz X" wird daraus weiße Schrift, die in 0,55 s einzeilig in ihren Balken gleitet und dort bis zum Ende bleibt.
+Name-Kasten (Straßen-/Parkname), exakt wie Referenzbild "Edmund-Siemers-Allee": weißer Kasten in Tabellenbreite (600 px), 110 px hoch, direkt auf der Tabelle (ohne Abstand), schwarze Montserrat Bold 54 px. Bei "Platz X" wird daraus weiße Schrift, die in 0,55 s in ihren Balken gleitet. Untertitel enden 20 px ueber dem Name-Kasten.
 
 ## Ablauf (Skripte in scripts/, Composio Sandbox: 1 CPU, 1 GB RAM)
 
