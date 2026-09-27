@@ -37,7 +37,7 @@ Ranking-Tabelle (ganzes Video sichtbar, ueber dem Video, kein schwarzer Hintergr
 - Breite 600 px, zentriert, Zeilenhoehe 78, Abstand 8, Unterkante bei y=1680 (Oberkante y=1172)
 - Nummernblock links 80 px, 22 % dunkler als die Balkenfarbe, Ziffer weiß 56 px
 - Straßenname im Balken: weiß 56 px (ca. 11 px Luft oben/unten), Kontur 3, normale Groß-/Kleinschreibung, zentriert im Farbbereich, bei langen Namen nur horizontal gestaucht
-- Farben Platz 1 bis 6: #B71C1C (dunkelrot), #EE5A28, #F08A3E, #F4C63D, #8BCB4A, #22B55A (gruen)
+- Farben Standard (oben gruen, unten rot): Platz 1 bis 6 #22B55A, #8BCB4A, #F4C63D, #F08A3E, #EE5A28, #B71C1C. Nur bei Negativ-Rankings (z. B. lauteste Straßen, Platz 1 = am schlimmsten) umgedreht: im Projekt \"order\": \"red_top\"
 - Ecken abgerundet 12 px
 
 Ueberschrift (Straßenname): waehrend der Bewertung schwarze Schrift 72 px auf weißem Kasten (hebt sich von den Untertiteln ab), einzeilig, bei y=1112 zentriert direkt ueber der Tabelle, normale Groß-/Kleinschreibung. Bei "Platz X" wird daraus weiße Schrift, die in 0,55 s einzeilig in ihren Balken gleitet und dort bis zum Ende bleibt.

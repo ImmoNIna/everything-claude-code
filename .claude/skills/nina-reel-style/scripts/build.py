@@ -117,8 +117,10 @@ END = t_out + 1
 W, RH, GAP, NB = 600, 78, 8, 80
 X0 = (1080 - W) // 2
 Y0 = 1680 - (NPL * RH + (NPL - 1) * GAP)
-# Platz 1 dark red ... last place green
-PAL = ['B71C1C', 'EE5A28', 'F08A3E', 'F4C63D', '8BCB4A', '22B55A']
+# default: Platz 1 green (top) ... last place red; project "order": "red_top" flips it
+PAL = ['22B55A', '8BCB4A', 'F4C63D', 'F08A3E', 'EE5A28', 'B71C1C']
+if P.get('order') == 'red_top':
+    PAL = PAL[::-1]
 COL = {r: PAL[round((r - 1) * (len(PAL) - 1) / max(1, NPL - 1))] for r in range(1, NPL + 1)}
 
 
